@@ -24,7 +24,7 @@ def upload_photo(path, server_url):
         hash = response['hash']
         server = response['server']
 
-    return [photo, hash, server]
+    return photo, hash, server
 
 
 def get_wall_upload_server(access_token, group_id):
@@ -51,16 +51,16 @@ def get_comic():
     return comic['alt'], comic['title']
 
 
-def save_photo(vk_group_id, vk_access_token, path, upload_params):
+def save_photo(vk_group_id, vk_access_token, photo, hash, server):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
 
     params = {
         'group_id': vk_group_id,
         'access_token': vk_access_token,
         'v': '5.131',
-        'photo': upload_params[0],
-        'hash': upload_params[1],
-        'server': upload_params[2]
+        'photo': photo,
+        'hash': hash,
+        'server': server
 
     }
     response = requests.post(url, params=params)
@@ -76,9 +76,9 @@ def post_photo(vk_access_token, vk_group_id, path):
     comic_comments, comic_title = get_comic()
 
     server_url = get_wall_upload_server(vk_access_token, vk_group_id)
-    upload_params = upload_photo(path, server_url)
+    photo, hash, server = upload_photo(path, server_url)
     owner_id, media_id =\
-    save_photo(vk_group_id, vk_access_token, path, upload_params)
+    save_photo(vk_group_id, vk_access_token, photo, hash, server)
 
     url = 'https://api.vk.com/method/wall.post'
     params = {
@@ -93,8 +93,8 @@ def post_photo(vk_access_token, vk_group_id, path):
 
     response = requests.post(url, params=params)
     response.raise_for_status()
-    
-    
+
+
 def get_comics_count():
     url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
@@ -116,3 +116,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
