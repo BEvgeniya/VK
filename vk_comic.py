@@ -42,7 +42,7 @@ def get_wall_upload_server(access_token, group_id):
 
 
 def get_comic():
-    url = f'https://xkcd.com/{random.randint(1, 2529)}/info.0.json'
+    url = f'https://xkcd.com/{random.randint(1, get_comics_count())}/info.0.json'
 
     response = requests.get(url)
     response.raise_for_status()
@@ -93,6 +93,13 @@ def post_photo(vk_access_token, vk_group_id, path):
 
     response = requests.post(url, params=params)
     response.raise_for_status()
+    
+    
+def get_comics_count():
+    url = 'https://xkcd.com/info.0.json'
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()['num']
 
 
 def main():
