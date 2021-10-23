@@ -17,12 +17,12 @@ def upload_photo(path, server_url):
         files = {
             'photo': file,
         }
-        response = requests.post(server_url, files=files)
-        response.raise_for_status()
-        response = response.json()
-        photo = response['photo']
-        hash = response['hash']
-        server = response['server']
+    response = requests.post(server_url, files=files)
+    response.raise_for_status()
+    response = response.json()
+    photo = response['photo']
+    hash = response['hash']
+    server = response['server']
 
     return photo, hash, server
 
