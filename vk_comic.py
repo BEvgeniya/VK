@@ -101,8 +101,10 @@ def main():
     vk_access_token = os.getenv('VK_ACCESS_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
 
-    post_photo(vk_access_token, vk_group_id, path)
-    os.remove(path)
+    try:
+        post_photo(vk_access_token, vk_group_id, path)
+    finally:
+        os.remove(path)
 
 
 if __name__ == '__main__':
