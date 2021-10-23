@@ -13,7 +13,8 @@ pip install -r requirements.txt
 - VK_ACCESS_TOKEN
 - VK_GROUP_ID
 
-Токен можно получить, следуя [инструкции](https://vk.com/dev/implicit_flow_user). Group_id - id вашей группы ВКонтакте.
+Токен можно получить, следуя [инструкции](https://vk.com/dev/implicit_flow_user). Требуемые scopes: photos,groups,wall,offline. Group_id - id вашей группы ВКонтакте.
+
  
  ## Run
 
