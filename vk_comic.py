@@ -77,8 +77,11 @@ def post_photo(vk_access_token, vk_group_id, path):
 
     server_url = get_wall_upload_server(vk_access_token, vk_group_id)
     photo, photo_hash, server = upload_photo(path, server_url)
-    owner_id, media_id =\
-    save_photo(vk_group_id, vk_access_token, photo, photo_hash, server)
+    owner_id, media_id = save_photo(vk_group_id,
+                                    vk_access_token,
+                                    photo,
+                                    photo_hash,
+                                    server)
 
     url = 'https://api.vk.com/method/wall.post'
     params = {
