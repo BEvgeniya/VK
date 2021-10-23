@@ -12,6 +12,13 @@ def load_comics(url, path):
         return file.write(response.content)
 
 
+def check_vk_api_response(response):
+    try:
+        print('Ошибка! '+response.json()['error'])
+    except KeyError:
+        return
+
+
 def upload_photo(path, server_url):
     with open(path, 'rb') as file:
         files = {
@@ -19,6 +26,7 @@ def upload_photo(path, server_url):
         }
         response = requests.post(server_url, files=files)
     response.raise_for_status()
+    check_vk_api_response(response)
     response = response.json()
     photo = response['photo']
     photo_hash = response['hash']
@@ -37,17 +45,18 @@ def get_wall_upload_server(access_token, group_id):
 
     response = requests.get(url, params=params)
     response.raise_for_status()
+    check_vk_api_response(response)
     upload_url = response.json()['response']['upload_url']
     return upload_url
 
 
-def get_comic():
+def get_comic(filename):
     url = f'https://xkcd.com/{random.randint(1, get_comics_count())}/info.0.json'
 
     response = requests.get(url)
     response.raise_for_status()
     comic = response.json()
-    load_comics(comic['img'], 'comics_vk.png')
+    load_comics(comic['img'], filename)
     return comic['alt'], comic['title']
 
 
@@ -65,6 +74,7 @@ def save_photo(vk_group_id, vk_access_token, photo, photo_hash, server):
     }
     response = requests.post(url, params=params)
     response.raise_for_status()
+    check_vk_api_response(response)
     response = response.json()
     owner_id = response['response'][0]['owner_id']
     media_id = response['response'][0]['id']
@@ -73,7 +83,7 @@ def save_photo(vk_group_id, vk_access_token, photo, photo_hash, server):
 
 
 def post_photo(vk_access_token, vk_group_id, path):
-    comic_comments, comic_title = get_comic()
+    comic_comments, comic_title = get_comic(path)
 
     server_url = get_wall_upload_server(vk_access_token, vk_group_id)
     photo, photo_hash, server = upload_photo(path, server_url)
@@ -96,6 +106,7 @@ def post_photo(vk_access_token, vk_group_id, path):
 
     response = requests.post(url, params=params)
     response.raise_for_status()
+    check_vk_api_response(response)
 
 
 def get_comics_count():
@@ -119,4 +130,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
