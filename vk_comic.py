@@ -14,7 +14,7 @@ def load_comics(url, path):
 
 def check_vk_api_response(response):
     try:
-        print('Ошибка! '+response.json()['error'])
+        print(f'Ошибка! {response.json()["error"]}')
     except KeyError:
         return
 
@@ -47,7 +47,7 @@ def get_wall_upload_server(access_token, group_id):
     response.raise_for_status()
     check_vk_api_response(response)
     upload_url = response.json()['response']['upload_url']
-    return upload_url   
+    return upload_url
 
 
 def get_comic(filename, comic_number):
@@ -97,7 +97,7 @@ def post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title):
         'owner_id': f'-{vk_group_id}',
         'from_group': 1,
         'attachments': f'photo{owner_id}_{media_id}',
-        'message': comic_title + '. ' + comic_comments,
+        'message': f'{comic_title}. {comic_comments}',
         'access_token': vk_access_token,
         'v': '5.131',
 
