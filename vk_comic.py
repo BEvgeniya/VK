@@ -13,8 +13,11 @@ def load_comics(url, path):
 
 
 def check_vk_api_response(response):
+    response = response.json()
     try:
-        print(f'Ошибка! {response.json()["error"]}')
+        error_text = response['error']['error_msg']
+        error_code = response['error']['error_code']
+        raise(requests.HTTPError(f'Error: {error_text}. Code: {error_code}.'))
     except KeyError:
         return
 
