@@ -82,8 +82,7 @@ def save_photo(vk_group_id, vk_access_token, photo, photo_hash, server):
     return owner_id, media_id
 
 
-def post_photo(vk_access_token, vk_group_id, path):
-    comic_comments, comic_title = get_comic(path)
+def post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title):
 
     server_url = get_wall_upload_server(vk_access_token, vk_group_id)
     photo, photo_hash, server = upload_photo(path, server_url)
@@ -122,8 +121,10 @@ def main():
     vk_access_token = os.getenv('VK_ACCESS_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
 
+    comic_comments, comic_title = get_comic(path)
+
     try:
-        post_photo(vk_access_token, vk_group_id, path)
+        post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title)
     finally:
         os.remove(path)
 
