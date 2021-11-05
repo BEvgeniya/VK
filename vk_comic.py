@@ -17,7 +17,7 @@ def check_vk_api_response(response):
     try:
         error_text = response['error']['error_msg']
         error_code = response['error']['error_code']
-        raise(requests.HTTPError(f'Error: {error_text}. Code: {error_code}.'))
+        raise requests.HTTPError(f'Code: {error_code}. Error: {error_text}.')
     except KeyError:
         return
 
