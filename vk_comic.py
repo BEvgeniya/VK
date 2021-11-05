@@ -49,12 +49,13 @@ def get_wall_upload_server(access_token, group_id):
     response = requests.get(url, params=params)
     response.raise_for_status()
     check_vk_api_response(response)
-    upload_url = response.json()['response']['upload_url']
+    response = response.json()
+    upload_url = response['response']['upload_url']
     return upload_url
 
 
-def get_comic(filename, comic_random_number):
-    url = f'https://xkcd.com/{comic_random_number}/info.0.json'
+def get_comic(filename, random_comic_number):
+    url = f'https://xkcd.com/{random_comic_number}/info.0.json'
 
     response = requests.get(url)
     response.raise_for_status()
@@ -111,7 +112,7 @@ def post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title):
     check_vk_api_response(response)
 
 
-def get_comic_random_number():
+def get_random_comic_number():
     url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
@@ -125,7 +126,7 @@ def main():
     vk_access_token = os.getenv('VK_ACCESS_TOKEN')
     vk_group_id = os.getenv('VK_GROUP_ID')
 
-    comic_comments, comic_title = get_comic(path, get_comic_random_number())
+    comic_comments, comic_title = get_comic(path, get_random_comic_number())
 
     try:
         post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title)
