@@ -13,7 +13,6 @@ def load_comics(url, path):
 
 
 def check_vk_api_response(response):
-    response = response.json()
     try:
         error_text = response['error']['error_msg']
         error_code = response['error']['error_code']
@@ -29,8 +28,8 @@ def upload_photo(path, server_url):
         }
         response = requests.post(server_url, files=files)
     response.raise_for_status()
-    check_vk_api_response(response)
     response = response.json()
+    check_vk_api_response(response)
     photo = response['photo']
     photo_hash = response['hash']
     server = response['server']
@@ -48,8 +47,8 @@ def get_wall_upload_server(access_token, group_id):
 
     response = requests.get(url, params=params)
     response.raise_for_status()
-    check_vk_api_response(response)
     response = response.json()
+    check_vk_api_response(response)
     upload_url = response['response']['upload_url']
     return upload_url
 
@@ -78,8 +77,8 @@ def save_photo(vk_group_id, vk_access_token, photo, photo_hash, server):
     }
     response = requests.post(url, params=params)
     response.raise_for_status()
-    check_vk_api_response(response)
     response = response.json()
+    check_vk_api_response(response)
     owner_id = response['response'][0]['owner_id']
     media_id = response['response'][0]['id']
 
@@ -109,7 +108,7 @@ def post_photo(vk_access_token, vk_group_id, path, comic_comments, comic_title):
 
     response = requests.post(url, params=params)
     response.raise_for_status()
-    check_vk_api_response(response)
+    check_vk_api_response(response.json())
 
 
 def get_random_comic_number():
